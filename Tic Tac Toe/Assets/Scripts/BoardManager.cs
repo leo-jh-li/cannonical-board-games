@@ -2,6 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Direction
+{
+	UP,
+	UP_RIGHT,
+	RIGHT,
+	DOWN_RIGHT,
+	DOWN,
+	DOWN_LEFT,
+	LEFT,
+	UP_LEFT
+}
+
 public abstract class BoardManager : MonoBehaviour {
 
 	public Game game;
@@ -29,17 +41,19 @@ public abstract class BoardManager : MonoBehaviour {
 	{
 		GetCellWidth();
 		InitializeBoard();
+		//TODO
+		ResetBoard();
 	}
 
 	protected abstract void GetCellWidth();
 
 	protected virtual void InitializeBoard()
 	{
-		board = new Cell[rows, cols];
+		board = new Cell[cols, rows];
 
-		for (int i = 0; i < rows; i++)
+		for (int i = 0; i < cols; i++)
 		{
-			for (int j = 0; j < cols; j++)
+			for (int j = 0; j < rows; j++)
 			{
 				Vector3 cellPosition = CoordToPosition(i, j);
 				board[i, j] = Instantiate(cellPrefab, cellPosition, Quaternion.identity, transform).GetComponent<Cell>();
@@ -52,7 +66,7 @@ public abstract class BoardManager : MonoBehaviour {
 
 	public void ResetBoard()
 	{
-		for (int i = 0; i < rows; i++)
+		for (int i = 0; i < cols; i++)
 		{
 			for (int j = 0; j < rows; j++)
 			{
@@ -79,15 +93,57 @@ public abstract class BoardManager : MonoBehaviour {
 	// Convert a set of coordinates to its position relative to the origin
 	private Vector3 CoordToPosition(int i, int j)
 	{
-		// Origin is considered the middle cell
-		Coord origin = new Coord(rows / 2, cols / 2);
-		return new Vector3(transform.position.x + (origin.x - i) * (cellWidth + borderWidth + marginWidth), transform.position.y - (origin.y - j) * (cellWidth + borderWidth + marginWidth), transform.position.z);
+		// Origin coord is considered the middle of the board
+		Vector2 origin = new Vector2((cols - 1) / 2f, (rows - 1) / 2f);
+		return new Vector3(transform.position.x + (-origin.x + i) * (cellWidth + borderWidth + marginWidth), transform.position.y + (-origin.y + j) * (cellWidth + borderWidth + marginWidth), transform.position.z);
 	}
 
 	public void SetBoardDestination()
 	{
 		destination = new Vector3(boardX.GetRandom(), boardY.GetRandom(), transform.position.z);
 		StartCoroutine(MoveBoard());
+	}
+
+	public bool IsValidCoord(Coord coord)
+	{
+		return coord.x >= 0 && coord.x < rows && coord.y >= 0 && coord.y < cols;
+	}
+	
+	// Returns the Cell dist Cells away from startCell in the given Direction. Returns null if no such Cell exists.
+	public Cell GetRelativeCell(Cell startCell, Direction dir, int dist)
+	{
+		if (startCell == null)
+		{
+			return null;
+		}
+		Coord desiredCoord = startCell.coord;
+		if (dir == Direction.UP) {
+			desiredCoord.y += dist;
+		} else if (dir == Direction.RIGHT) {
+			desiredCoord.x -= dist;
+		} else if (dir == Direction.DOWN) {
+			desiredCoord.y -= dist;
+		} else if (dir == Direction.LEFT) {
+			desiredCoord.x += dist;
+		} else if (dir == Direction.UP_RIGHT) {
+			return GetRelativeCell(GetRelativeCell(startCell, Direction.UP, dist), Direction.RIGHT, dist);
+		} else if (dir == Direction.DOWN_RIGHT) {
+			return GetRelativeCell(GetRelativeCell(startCell, Direction.DOWN, dist), Direction.RIGHT, dist);
+		} else if (dir == Direction.DOWN_LEFT) {
+			return GetRelativeCell(GetRelativeCell(startCell, Direction.DOWN, dist), Direction.LEFT, dist);
+		} else if (dir == Direction.UP_LEFT) {
+			return GetRelativeCell(GetRelativeCell(startCell, Direction.UP, dist), Direction.LEFT, dist);
+		}
+		if (IsValidCoord(desiredCoord))
+		{
+			return board[desiredCoord.x, desiredCoord.y];
+		}
+		return null;
+	}
+
+	public Cell GetRelativeCell(Cell startCell, Direction dir)
+	{
+		return GetRelativeCell(startCell, dir, 1);
 	}
 
 	public abstract void CheckGameOver(Cell cell);

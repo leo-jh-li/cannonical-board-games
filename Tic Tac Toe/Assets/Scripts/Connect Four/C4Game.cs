@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class C4Game: Game
 {
-
 	//TODO
 	public override void EndGame(Player winner)
 	{
-		gameState = GameState.GAMEOVER;
+		gameState = GameState.GAME_OVER;
 
 		//TODO
 		Debug.Log("GAME OVER");

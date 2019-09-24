@@ -8,6 +8,7 @@ public class Cannonball : MonoBehaviour {
 
 	public void ConvertToCell()
 	{
+		Debug.Log("cell hit");
 		Destroy(GetComponent<Collider>());
 		Destroy(GetComponent<Rigidbody>());
 	}

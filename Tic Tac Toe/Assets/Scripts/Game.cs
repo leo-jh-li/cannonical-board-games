@@ -5,7 +5,7 @@ using UnityEngine;
 public enum GameState
 {
 	ACTIVE,
-	GAMEOVER
+	GAME_OVER
 }
 
 public abstract class Game : MonoBehaviour
@@ -79,6 +79,7 @@ public abstract class Game : MonoBehaviour
 		cannon1.projectilePrefab = projectileBlue;
 		cannon1.uiManager = uiManager;
 		cannons.Add(cannon1);
+		cannons[0].player.playerType = PlayerType.ONE;
 
 		Player player2 = Instantiate(player, transform.position + new Vector3(0, cannonHeight, gameAreaLength), Quaternion.Euler(new Vector3(0, 180, 0))).GetComponent<Player>();
 		player2.playerMaterial = materialRed;
@@ -89,6 +90,7 @@ public abstract class Game : MonoBehaviour
 		cannon2.projectilePrefab = projectileRed;
 		cannon2.uiManager = uiManager;
 		cannons.Add(cannon2);
+		cannons[1].player.playerType = PlayerType.TWO;
 	}
 
 	protected IEnumerator ProcessTurn()

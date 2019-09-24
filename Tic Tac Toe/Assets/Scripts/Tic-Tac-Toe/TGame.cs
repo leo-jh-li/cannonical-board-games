@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class TGame : Game
 {
-	protected override void InitializeGame()
-	{
-		base.InitializeGame();
-		cannons[0].player.playerType = PlayerType.X;
-		cannons[1].player.playerType = PlayerType.O;
-	}
-
 	public void RestartGame()
 	{
 		//TODO
@@ -27,7 +20,7 @@ public class TGame : Game
 
 	public override void EndGame(Player winner)
 	{
-		gameState = GameState.GAMEOVER;
+		gameState = GameState.GAME_OVER;
 
 		//TODO
 		Debug.Log("GAME OVER");

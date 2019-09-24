@@ -5,8 +5,8 @@ using UnityEngine;
 public enum PlayerType
 {
 	NONE,
-	X,
-	O
+	ONE, // Player 1 / X / blue
+	TWO // Player 2 / O / red
 }
 
 public class Player : MonoBehaviour {

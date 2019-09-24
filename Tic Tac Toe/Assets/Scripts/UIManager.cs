@@ -26,12 +26,12 @@ public class UIManager : MonoBehaviour
 		else
 		{
 			winnerText.color = winner.playerMaterial.color;
-			if (winner.playerType == PlayerType.X)
+			if (winner.playerType == PlayerType.ONE)
 			{
 				winnerText.text = "X WINS";
 				winnerTextShadow.text = "X WINS";
 			}
-			else if (winner.playerType == PlayerType.O)
+			else if (winner.playerType == PlayerType.TWO)
 			{
 				winnerText.text = "O WINS";
 				winnerTextShadow.text = "O WINS";

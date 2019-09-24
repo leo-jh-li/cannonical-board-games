@@ -1,5 +1,10 @@
-﻿public class Coord {
+﻿using UnityEngine;
+
+[System.Serializable]
+public class Coord {
+	[SerializeField]
 	public int x;
+	[SerializeField]
 	public int y;
 
 	public Coord(int x, int y)
@@ -21,5 +26,9 @@
 	public static bool operator !=(Coord c1, Coord c2)
 	{
 		return !(c1 == c2);
+	}
+
+	public override string ToString() {
+		return "Coord (" + this.x + ", " + this.y + ")";
 	}
 }
