@@ -19,6 +19,7 @@ public abstract class BoardManager : MonoBehaviour {
 	public Game game;
 	public GameObject cellPrefab;
 	public Vector3 startPosition;
+	public Vector3 rotation;
 	public RandomRange boardX;
 	public RandomRange boardY;
 	protected Cell[,] board;
@@ -41,8 +42,6 @@ public abstract class BoardManager : MonoBehaviour {
 	{
 		GetCellWidth();
 		InitializeBoard();
-		//TODO
-		ResetBoard();
 	}
 
 	protected abstract void GetCellWidth();
@@ -62,6 +61,7 @@ public abstract class BoardManager : MonoBehaviour {
 			}
 		}
 		transform.position = startPosition;
+		transform.eulerAngles = rotation;
 	}
 
 	public void ResetBoard()
@@ -106,7 +106,7 @@ public abstract class BoardManager : MonoBehaviour {
 
 	public bool IsValidCoord(Coord coord)
 	{
-		return coord.x >= 0 && coord.x < rows && coord.y >= 0 && coord.y < cols;
+		return coord.x >= 0 && coord.x < cols && coord.y >= 0 && coord.y < rows;
 	}
 	
 	// Returns the Cell dist Cells away from startCell in the given Direction. Returns null if no such Cell exists.
@@ -116,15 +116,15 @@ public abstract class BoardManager : MonoBehaviour {
 		{
 			return null;
 		}
-		Coord desiredCoord = startCell.coord;
+		Coord desiredCoord = new Coord(startCell.coord.x, startCell.coord.y);
 		if (dir == Direction.UP) {
 			desiredCoord.y += dist;
 		} else if (dir == Direction.RIGHT) {
-			desiredCoord.x -= dist;
+			desiredCoord.x += dist;
 		} else if (dir == Direction.DOWN) {
 			desiredCoord.y -= dist;
 		} else if (dir == Direction.LEFT) {
-			desiredCoord.x += dist;
+			desiredCoord.x -= dist;
 		} else if (dir == Direction.UP_RIGHT) {
 			return GetRelativeCell(GetRelativeCell(startCell, Direction.UP, dist), Direction.RIGHT, dist);
 		} else if (dir == Direction.DOWN_RIGHT) {
@@ -133,6 +133,8 @@ public abstract class BoardManager : MonoBehaviour {
 			return GetRelativeCell(GetRelativeCell(startCell, Direction.DOWN, dist), Direction.LEFT, dist);
 		} else if (dir == Direction.UP_LEFT) {
 			return GetRelativeCell(GetRelativeCell(startCell, Direction.UP, dist), Direction.LEFT, dist);
+		} else {
+			Debug.LogWarning("Invalid direction.");
 		}
 		if (IsValidCoord(desiredCoord))
 		{

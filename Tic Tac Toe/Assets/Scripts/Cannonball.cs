@@ -5,10 +5,11 @@ using UnityEngine;
 public class Cannonball : MonoBehaviour {
 	public Player player;
 	public CannonController cannon;
+	public bool expended;
 
-	public void ConvertToCell()
+	public void OnHitCell()
 	{
-		Debug.Log("cell hit");
+		expended = true;
 		Destroy(GetComponent<Collider>());
 		Destroy(GetComponent<Rigidbody>());
 	}

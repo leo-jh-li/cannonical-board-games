@@ -33,14 +33,16 @@ public abstract class Cell : MonoBehaviour
 	}
 
 	protected virtual void ClaimCell(Cannonball cannonball) {
-		Debug.Log("HIT!");
-		cannonball.ConvertToCell();
-		Vector3 destination = transform.position;
-		cannonball.transform.SetParent(transform);
-		StartCoroutine(AnimateCellLock(cannonball));
-		owner = cannonball.player;
-		GetComponent<Collider>().isTrigger = false;
-		board.CheckGameOver(this);
+		if (!cannonball.expended) {
+			Debug.Log("HIT!");
+			cannonball.OnHitCell();
+			Vector3 destination = transform.position;
+			cannonball.transform.SetParent(transform);
+			StartCoroutine(AnimateCellLock(cannonball));
+			owner = cannonball.player;
+			GetComponent<Collider>().isTrigger = false;
+			board.CheckGameOver(this);
+		}
 	}
 
 	protected virtual IEnumerator AnimateCellLock(Cannonball cannonball)
