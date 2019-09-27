@@ -5,7 +5,7 @@ using UnityEngine;
 public class Cannonball : MonoBehaviour {
 	public Player player;
 	public CannonController cannon;
-	public bool expended;
+	public bool expended = false;
 
 	public void OnHitCell()
 	{

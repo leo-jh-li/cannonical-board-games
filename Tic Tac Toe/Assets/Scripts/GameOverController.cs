@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class GameOverController : MonoBehaviour
 {
+	public GameManager gameManager;
+
 	void Update()
     {
 		if (Input.GetButtonDown("Jump"))
 		{
-			GetComponent<TGame>().RestartGame();
+			GetComponent<Game>().RestartGame();
+			this.enabled = false;
+		}
+		if (Input.GetButtonDown("Fire2"))
+		{
+			gameManager.activeGame.ExitGame();
 			this.enabled = false;
 		}
 	}

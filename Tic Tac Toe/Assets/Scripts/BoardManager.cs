@@ -12,7 +12,7 @@ public enum Direction
 	DOWN_LEFT,
 	LEFT,
 	UP_LEFT
-}
+};
 
 public abstract class BoardManager : MonoBehaviour {
 
@@ -20,8 +20,8 @@ public abstract class BoardManager : MonoBehaviour {
 	public GameObject cellPrefab;
 	public Vector3 startPosition;
 	public Vector3 rotation;
-	public RandomRange boardX;
-	public RandomRange boardY;
+	public RandomRange boardXOffset;
+	public RandomRange boardYOffset;
 	protected Cell[,] board;
 	[SerializeField]
 	protected int rows;
@@ -73,6 +73,7 @@ public abstract class BoardManager : MonoBehaviour {
 				Destroy(board[i, j].gameObject);
 			}
 		}
+		transform.eulerAngles = Vector3.zero;
 		InitializeBoard();
 	}
 
@@ -100,7 +101,7 @@ public abstract class BoardManager : MonoBehaviour {
 
 	public void SetBoardDestination()
 	{
-		destination = new Vector3(boardX.GetRandom(), boardY.GetRandom(), transform.position.z);
+		destination = new Vector3(startPosition.x + boardXOffset.GetRandom(), startPosition.y + boardYOffset.GetRandom(), startPosition.z);
 		StartCoroutine(MoveBoard());
 	}
 

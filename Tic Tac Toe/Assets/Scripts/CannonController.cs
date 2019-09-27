@@ -10,6 +10,8 @@ public enum CannonState
 
 public class CannonController : MonoBehaviour {
 
+	public UIManager uiManager;
+	public Game game;
 	public Player player;
 	public Transform spawnPoint;
 
@@ -29,7 +31,6 @@ public class CannonController : MonoBehaviour {
 	private float currMagnitude;
 	public float maxMagnitude;
 	public float magnitudeIncrement;
-	public UIManager uiManager;
 
 	private Camera cam;
 
@@ -76,6 +77,10 @@ public class CannonController : MonoBehaviour {
 			if (Input.GetButtonUp("Jump"))
 			{
 				Fire();
+			}
+			if (Input.GetButtonDown("Fire2"))
+			{
+				game.ExitGame();
 			}
 		}
 	}

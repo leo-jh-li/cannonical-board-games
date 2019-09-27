@@ -15,8 +15,6 @@ public class C4Cell : Cell
     }
 
 	protected override void ClaimCell(Cannonball cannonball) {
-            Debug.Log(this.coord);
-
         if (this.claimable) {
             base.ClaimCell(cannonball);
             this.claimable = false;
