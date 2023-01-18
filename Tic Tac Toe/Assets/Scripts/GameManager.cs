@@ -26,13 +26,13 @@ public class GameManager : MonoBehaviour
 	public bool skipMenu;
 	public BoardGame gameToLoad;
 
-    void Start()
-    {
+	void Start()
+	{
 		// Get charge bar's default values
 		chargeContentDefaultPos = chargeContent.localPosition;
 		gameCanvas.SetActive(false);
 		firstButton.Select();
-        if (skipMenu)
+		if (skipMenu)
 		{
 			StartGame((int)gameToLoad);
 		}
