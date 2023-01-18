@@ -57,7 +57,6 @@ public abstract class Game : MonoBehaviour
 		mainCam = Camera.main;
 		camBehaviour = mainCam.GetComponent<CameraBehaviour>();
 		cannons = new List<CannonController>();
-		// Get charge bar's default values
 	}
 
 	//TODO: for testing
@@ -131,7 +130,7 @@ public abstract class Game : MonoBehaviour
 
 	public void RestartGame()
 	{
-		//TODO
+		CleanUpGame();
 		Debug.Log("restarted");
 		StartGame();
 	}
